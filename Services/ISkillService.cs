@@ -8,6 +8,6 @@ namespace employee_management.Services
         Task<ServiceResponse<GetSkillDto>> GetSkillById(int id);
         Task<ServiceResponse<List<GetSkillDto>>> AddSkill(AddSkillDto newSkill);
         Task<ServiceResponse<List<GetSkillDto>>> DeleteSkill(int id);
-        Task<ServiceResponse<GetSkillDto>> UpdateSkill(AddSkillDto updatedSkill);
+        Task<ServiceResponse<GetSkillDto>> UpdateSkill(UpdateSkillDto updatedSkill);
     }
 }

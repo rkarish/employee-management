@@ -27,7 +27,7 @@ namespace employee_management.Services
             return serviceResponse;
         }
 
-        public Task<ServiceResponse<GetSkillDto>> UpdateSkill(AddSkillDto updatedSkill)
+        public Task<ServiceResponse<GetSkillDto>> UpdateSkill(UpdateSkillDto updatedSkill)
         {
             throw new NotImplementedException();
         }
