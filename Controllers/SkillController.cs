@@ -19,5 +19,23 @@ namespace employee_management.Controllers
         {
             return Ok(await skillService.AddSkill(skill));
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> GetSkill(int id)
+        {
+            return Ok(await skillService.GetSkillById(id));
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> GetAllSkills()
+        {
+            return Ok(await skillService.GetAllSkills());
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> UpdateSkill(UpdateSkillDto updatedSkill)
+        {
+            return Ok(await skillService.UpdateSkill(updatedSkill));
+        }
     }
 }
