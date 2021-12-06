@@ -1,7 +1,7 @@
 using AutoMapper;
 using employee_management.Models;
 
-namespace employee_management
+namespace employee_management.Profiles
 {
     public class AutoMapperProfile : Profile
     {

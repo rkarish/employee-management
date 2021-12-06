@@ -1,4 +1,4 @@
-using employee_management;
+using employee_management.Profiles;
 using employee_management.Services;
 
 var builder = WebApplication.CreateBuilder(args);

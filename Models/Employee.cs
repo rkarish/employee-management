@@ -18,7 +18,7 @@ namespace employee_management.Models
         public DateTime? HiringDate { get; set; }
     }
 
-    public class UpdatedEmployeeDto
+    public class UpdateEmployeeDto
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
