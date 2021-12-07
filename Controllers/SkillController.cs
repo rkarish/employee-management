@@ -14,6 +14,7 @@ namespace employee_management.Controllers
         {
             this.skillService = skillService;
         }
+
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<Skill>>>> Add(AddSkillDto skill)
         {

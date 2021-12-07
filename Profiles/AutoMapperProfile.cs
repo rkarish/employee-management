@@ -9,6 +9,9 @@ namespace employee_management.Profiles
         {
             CreateMap<Skill, GetSkillDto>();
             CreateMap<AddSkillDto, Skill>();
+
+            CreateMap<Employee, GetEmployeeDto>();
+            CreateMap<AddEmployeeDto, Employee>();
         }
     }
 }

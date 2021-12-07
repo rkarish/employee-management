@@ -16,7 +16,10 @@ namespace employee_management.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Skill>().HasData(
-                new Skill { Id = 1, Name = "Python", Description = "Best programming language." }
+                new Skill { Id = 1, Name = "Python", Description = "Best programming language.", DateCreated = DateTime.Now }
+            );
+            modelBuilder.Entity<Employee>().HasData(
+                new Employee { Id = 1, FirstName = "Robert", LastName = "Karish", Details = "Software Engineer", DateCreated = DateTime.Now }
             );
         }
     }

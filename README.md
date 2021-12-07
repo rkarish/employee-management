@@ -12,7 +12,7 @@ docker exec -it sql_server /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Str
 ### Create the Database
 
 ```shell
-dotnet ef migrations add InitialCreate
+dotnet ef migrations add <migration_name>
 dotnet ef database update
 ```
 
