@@ -31,7 +31,7 @@ namespace employee_management.Services
             {
                 Skill skill = mapper.Map<Skill>(newSkill);
                 skill.DateCreated = DateTime.Now;
-                context.Skills.Add(skill);
+                context.Skills!.Add(skill);
                 await context.SaveChangesAsync();
                 serviceResponse.Data = await context.Skills.Select(s => mapper.Map<GetSkillDto>(s)).ToListAsync();
             }
@@ -57,7 +57,7 @@ namespace employee_management.Services
 
             try
             {
-                serviceResponse.Data = await context.Skills.Select(s => mapper.Map<GetSkillDto>(s)).ToListAsync();
+                serviceResponse.Data = await context.Skills!.Select(s => mapper.Map<GetSkillDto>(s)).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -81,7 +81,7 @@ namespace employee_management.Services
 
             try
             {
-                Skill? skill = await context.Skills.FirstOrDefaultAsync(s => s.Id == id);
+                Skill? skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == id);
                 if (skill != null)
                 {
                     serviceResponse.Data = mapper.Map<GetSkillDto>(skill);
@@ -115,7 +115,7 @@ namespace employee_management.Services
 
             try
             {
-                Skill? skill = await context.Skills.FirstOrDefaultAsync(s => s.Id == updatedSkill.Id);
+                Skill? skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == updatedSkill.Id);
                 if (skill != null)
                 {
                     skill.Name = updatedSkill.Name;
@@ -152,10 +152,10 @@ namespace employee_management.Services
 
             try
             {
-                Skill? skill = await context.Skills.FirstOrDefaultAsync(s => s.Id == id);
+                Skill? skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == id);
                 if (skill != null)
                 {
-                    context.Skills.Remove(skill);
+                    context.Skills!.Remove(skill);
                     await context.SaveChangesAsync();
                     serviceResponse.Data = await context.Skills.Select(s => mapper.Map<GetSkillDto>(s)).ToListAsync();
                 }

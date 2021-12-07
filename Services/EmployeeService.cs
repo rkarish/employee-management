@@ -31,17 +31,17 @@ namespace employee_management.Services
             {
                 Employee employee = mapper.Map<Employee>(newEmployee);
                 employee.DateCreated = DateTime.Now;
-                await context.Employees.AddAsync(employee);
-                foreach (var skillId in newEmployee.SkillIds)
+                await context.Employees!.AddAsync(employee);
+                foreach (var skillId in newEmployee.SkillIds!)
                 {
-                    Skill? skill = await context.Skills.FirstOrDefaultAsync(s => s.Id == skillId);
+                    Skill? skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == skillId);
                     if (skill == null)
                     {
                         serviceResponse.Success = false;
                         serviceResponse.Message = $"Skill id {skillId} not found.";
                         return serviceResponse;
                     }
-                    await context.EmployeeSkills.AddAsync(new EmployeeSkill
+                    await context.EmployeeSkills!.AddAsync(new EmployeeSkill
                     {
                         EmployeeId = employee.Id,
                         SkillId = skillId,
@@ -51,7 +51,7 @@ namespace employee_management.Services
                 }
                 await context.SaveChangesAsync();
                 serviceResponse.Data = await context.Employees
-                    .Include(e => e.EmployeeSkills)
+                    .Include(e => e.EmployeeSkills)!
                     .ThenInclude(es => es.Skill)
                     .Select(e => mapper.Map<GetEmployeeDto>(e))
                     .ToListAsync();
@@ -78,7 +78,7 @@ namespace employee_management.Services
 
             try
             {
-                serviceResponse.Data = await context.Employees.Select(e => mapper.Map<GetEmployeeDto>(e)).ToListAsync();
+                serviceResponse.Data = await context.Employees!.Select(e => mapper.Map<GetEmployeeDto>(e)).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -102,8 +102,10 @@ namespace employee_management.Services
 
             try
             {
-                // Employee? employee = await context.Employees.FirstOrDefaultAsync(e => e.Id == id);
-                Employee? employee = await context.Employees.Include(e => e.EmployeeSkills).ThenInclude(es => es.Skill).FirstOrDefaultAsync(e => e.Id == id);
+                Employee? employee = await context.Employees!
+                    .Include(e => e.EmployeeSkills!)
+                    .ThenInclude(es => es.Skill)
+                    .FirstOrDefaultAsync(e => e.Id == id);
 
                 if (employee != null)
                 {
@@ -138,7 +140,7 @@ namespace employee_management.Services
 
             try
             {
-                Employee? employee = await context.Employees.FirstOrDefaultAsync(e => e.Id == updatedEmployee.Id);
+                Employee? employee = await context.Employees!.FirstOrDefaultAsync(e => e.Id == updatedEmployee.Id);
                 if (employee != null)
                 {
                     employee.FirstName = updatedEmployee.FirstName;
@@ -177,7 +179,7 @@ namespace employee_management.Services
 
             try
             {
-                Employee? employee = await context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+                Employee? employee = await context.Employees!.FirstOrDefaultAsync(e => e.Id == id);
                 if (employee != null)
                 {
                     context.Employees.Remove(employee);

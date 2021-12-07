@@ -5,9 +5,9 @@ namespace employee_management.Data
 {
     public class DataContext : DbContext
     {
-        public DbSet<Skill> Skills { get; set; } = null!;
-        public DbSet<Employee> Employees { get; set; } = null!;
-        public DbSet<EmployeeSkill> EmployeeSkills { get; set; } = null!;
+        public DbSet<Skill>? Skills { get; set; }
+        public DbSet<Employee>? Employees { get; set; }
+        public DbSet<EmployeeSkill>? EmployeeSkills { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
