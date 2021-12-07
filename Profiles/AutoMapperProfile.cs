@@ -10,7 +10,9 @@ namespace employee_management.Profiles
             CreateMap<Skill, GetSkillDto>();
             CreateMap<AddSkillDto, Skill>();
 
-            CreateMap<Employee, GetEmployeeDto>();
+            CreateMap<Employee, GetEmployeeDto>().ForMember(dto => dto.Skills, e => e.MapFrom(e => e.EmployeeSkills.Select(es => es.Skill)));
+            CreateMap<GetEmployeeDto, Employee>();
+
             CreateMap<AddEmployeeDto, Employee>();
         }
     }

@@ -31,9 +31,30 @@ namespace employee_management.Services
             {
                 Employee employee = mapper.Map<Employee>(newEmployee);
                 employee.DateCreated = DateTime.Now;
-                context.Employees.Add(employee);
+                await context.Employees.AddAsync(employee);
+                foreach (var skillId in newEmployee.SkillIds)
+                {
+                    Skill? skill = await context.Skills.FirstOrDefaultAsync(s => s.Id == skillId);
+                    if (skill == null)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = $"Skill id {skillId} not found.";
+                        return serviceResponse;
+                    }
+                    await context.EmployeeSkills.AddAsync(new EmployeeSkill
+                    {
+                        EmployeeId = employee.Id,
+                        SkillId = skillId,
+                        Employee = employee,
+                        Skill = skill
+                    });
+                }
                 await context.SaveChangesAsync();
-                serviceResponse.Data = await context.Employees.Select(e => mapper.Map<GetEmployeeDto>(e)).ToListAsync();
+                serviceResponse.Data = await context.Employees
+                    .Include(e => e.EmployeeSkills)
+                    .ThenInclude(es => es.Skill)
+                    .Select(e => mapper.Map<GetEmployeeDto>(e))
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -81,7 +102,9 @@ namespace employee_management.Services
 
             try
             {
-                Employee? employee = await context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+                // Employee? employee = await context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+                Employee? employee = await context.Employees.Include(e => e.EmployeeSkills).ThenInclude(es => es.Skill).FirstOrDefaultAsync(e => e.Id == id);
+
                 if (employee != null)
                 {
                     serviceResponse.Data = mapper.Map<GetEmployeeDto>(employee);

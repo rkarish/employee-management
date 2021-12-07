@@ -56,10 +56,32 @@ namespace employee_management.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2021, 12, 7, 1, 12, 4, 115, DateTimeKind.Local).AddTicks(9530),
+                            DateCreated = new DateTime(2021, 12, 7, 3, 7, 1, 274, DateTimeKind.Local).AddTicks(3920),
                             Details = "Software Engineer",
                             FirstName = "Robert",
                             LastName = "Karish"
+                        });
+                });
+
+            modelBuilder.Entity("employee_management.Models.EmployeeSkill", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeId", "SkillId");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("EmployeeSkills");
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeId = 1,
+                            SkillId = 1
                         });
                 });
 
@@ -91,10 +113,39 @@ namespace employee_management.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2021, 12, 7, 1, 12, 4, 115, DateTimeKind.Local).AddTicks(9310),
+                            DateCreated = new DateTime(2021, 12, 7, 3, 7, 1, 274, DateTimeKind.Local).AddTicks(3770),
                             Description = "Best programming language.",
                             Name = "Python"
                         });
+                });
+
+            modelBuilder.Entity("employee_management.Models.EmployeeSkill", b =>
+                {
+                    b.HasOne("employee_management.Models.Employee", "Employee")
+                        .WithMany("EmployeeSkills")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("employee_management.Models.Skill", "Skill")
+                        .WithMany("EmployeeSkills")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Skill");
+                });
+
+            modelBuilder.Entity("employee_management.Models.Employee", b =>
+                {
+                    b.Navigation("EmployeeSkills");
+                });
+
+            modelBuilder.Entity("employee_management.Models.Skill", b =>
+                {
+                    b.Navigation("EmployeeSkills");
                 });
 #pragma warning restore 612, 618
         }

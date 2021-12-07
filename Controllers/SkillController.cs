@@ -16,7 +16,7 @@ namespace employee_management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<Skill>>>> Add(AddSkillDto skill)
+        public async Task<ActionResult<ServiceResponse<List<GetSkillDto>>>> Add(AddSkillDto skill)
         {
             return Ok(await skillService.Add(skill));
         }
