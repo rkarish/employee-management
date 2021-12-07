@@ -4,10 +4,10 @@ namespace employee_management.Services
 {
     public interface IEmployeeService
     {
-        Task<ServiceResponse<List<GetEmployeeDto>>> GetAllEmployee();
-        Task<ServiceResponse<GetEmployeeDto>> GetEmployeeById(int id);
-        Task<ServiceResponse<List<GetEmployeeDto>>> AddEmployee(AddEmployeeDto newEmployee);
-        Task<ServiceResponse<List<GetEmployeeDto>>> DeleteEmployee(int id);
-        Task<ServiceResponse<GetEmployeeDto>> UpdateEmployee(UpdateEmployeeDto updatedEmployee);
+        Task<ServiceResponse<List<GetEmployeeDto>>> GetAll();
+        Task<ServiceResponse<GetEmployeeDto>> GetById(int id);
+        Task<ServiceResponse<List<GetEmployeeDto>>> Add(AddEmployeeDto newEmployee);
+        Task<ServiceResponse<List<GetEmployeeDto>>> DeleteById(int id);
+        Task<ServiceResponse<GetEmployeeDto>> Update(UpdateEmployeeDto updatedEmployee);
     }
 }

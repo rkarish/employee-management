@@ -13,7 +13,7 @@ docker exec -it sql_server /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Str
 
 ```shell
 dotnet ef migrations add InitialCreate
-dotnet ef database update 20211207003936_InitialCreate --connection "Server=127.0.0.1,1433\\mssqllocaldb; Database=employee_management; User=SA; Password=StrongPassword!;"
+dotnet ef database update
 ```
 
 ### Run for Development

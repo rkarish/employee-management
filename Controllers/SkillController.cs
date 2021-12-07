@@ -15,27 +15,33 @@ namespace employee_management.Controllers
             this.skillService = skillService;
         }
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<Skill>>>> AddSkill(AddSkillDto skill)
+        public async Task<ActionResult<ServiceResponse<List<Skill>>>> Add(AddSkillDto skill)
         {
-            return Ok(await skillService.AddSkill(skill));
+            return Ok(await skillService.Add(skill));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> GetSkill(int id)
+        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> GetById(int id)
         {
-            return Ok(await skillService.GetSkillById(id));
+            return Ok(await skillService.GetById(id));
         }
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> GetAllSkills()
+        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> GetAll()
         {
-            return Ok(await skillService.GetAllSkills());
+            return Ok(await skillService.GetAll());
         }
 
         [HttpPut]
-        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> UpdateSkill(UpdateSkillDto updatedSkill)
+        public async Task<ActionResult<ServiceResponse<GetSkillDto>>> Update(UpdateSkillDto updatedSkill)
         {
-            return Ok(await skillService.UpdateSkill(updatedSkill));
+            return Ok(await skillService.Update(updatedSkill));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetSkillDto>>>> DeleteById(int id)
+        {
+            return Ok(await skillService.DeleteById(id));
         }
     }
 }

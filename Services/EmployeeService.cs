@@ -4,27 +4,27 @@ namespace employee_management.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        public Task<ServiceResponse<List<GetEmployeeDto>>> AddEmployee(AddEmployeeDto newEmployee)
+        public Task<ServiceResponse<List<GetEmployeeDto>>> Add(AddEmployeeDto newEmployee)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<GetEmployeeDto>>> DeleteEmployee(int id)
+        public Task<ServiceResponse<List<GetEmployeeDto>>> DeleteById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<GetEmployeeDto>>> GetAllEmployee()
+        public Task<ServiceResponse<List<GetEmployeeDto>>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<GetEmployeeDto>> GetEmployeeById(int id)
+        public Task<ServiceResponse<GetEmployeeDto>> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<GetEmployeeDto>> UpdateEmployee(UpdateEmployeeDto updatedEmployee)
+        public Task<ServiceResponse<GetEmployeeDto>> Update(UpdateEmployeeDto updatedEmployee)
         {
             throw new NotImplementedException();
         }
