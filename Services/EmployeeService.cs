@@ -22,13 +22,15 @@ namespace employee_management.Services
 
             try
             {
+                // Add the new Employee.
                 Employee employee = mapper.Map<Employee>(newEmployee);
                 employee.DateCreated = DateTime.Now;
                 await context.Employees!.AddAsync(employee);
+
                 foreach (var skillId in newEmployee.SkillIds!)
                 {
+                    // Check if each Skill exists.
                     Skill? skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == skillId);
-
                     if (skill == null)
                     {
                         serviceResponse.Success = false;
@@ -36,6 +38,7 @@ namespace employee_management.Services
                         return serviceResponse;
                     }
 
+                    // Add the new EmployeeSkill's.
                     await context.EmployeeSkills!.AddAsync(new EmployeeSkill
                     {
                         EmployeeId = employee.Id,
@@ -98,6 +101,7 @@ namespace employee_management.Services
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Employee not found.";
+                    return serviceResponse;
                 }
 
                 serviceResponse.Data = mapper.Map<GetEmployeeDto>(employee);
@@ -117,21 +121,19 @@ namespace employee_management.Services
 
             try
             {
+                // Get the Employee and make sure it exists.
                 Employee? employee = await context.Employees!.FirstOrDefaultAsync(e => e.Id == updatedEmployee.Id);
-
                 if (employee == null)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Employee not found.";
+                    return serviceResponse;
                 }
 
-                HashSet<int> updatedSkillIds = new HashSet<int>(updatedEmployee.SkillIds!);
-
                 // Check if each Skill exists.
-                foreach (var skillId in updatedSkillIds)
+                foreach (var skillId in updatedEmployee.SkillIds!)
                 {
                     Skill? skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == skillId);
-
                     if (skill == null)
                     {
                         serviceResponse.Success = false;
@@ -147,27 +149,27 @@ namespace employee_management.Services
                     .ToListAsync();
 
                 // Add EmployeeSkill's that do not exist for the Employee.
-                foreach (var skillId in updatedSkillIds)
+                foreach (var skillId in updatedEmployee.SkillIds!)
                 {
                     if (!skillIds.Contains(skillId))
                     {
-                        Skill? skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == skillId);
-
                         await context.EmployeeSkills!.AddAsync(new EmployeeSkill
                         {
                             EmployeeId = employee!.Id,
                             SkillId = skillId,
                             Employee = employee,
-                            Skill = skill
+                            Skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == skillId)
                         });
                     }
                 }
 
+                // Remove EmployeeSkill's that are not in the update.
                 foreach (var skillId in skillIds)
                 {
-                    if (!updatedSkillIds.Contains(skillId))
+                    if (!updatedEmployee.SkillIds.Contains(skillId))
                     {
-                        EmployeeSkill? employeeSkill = await context.EmployeeSkills!.FirstOrDefaultAsync(es => es.EmployeeId == employee!.Id && es.SkillId == skillId);
+                        EmployeeSkill? employeeSkill = await context.EmployeeSkills!.
+                            FirstOrDefaultAsync(es => es.EmployeeId == employee!.Id && es.SkillId == skillId);
                         context.EmployeeSkills!.Remove(employeeSkill!);
                     }
                 }
@@ -200,27 +202,24 @@ namespace employee_management.Services
         {
             var serviceResponse = new ServiceResponse<List<GetEmployeeDto>>();
 
-            if (context == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No data context.";
-                return serviceResponse;
-            }
-
             try
             {
                 Employee? employee = await context.Employees!.FirstOrDefaultAsync(e => e.Id == id);
-                if (employee != null)
-                {
-                    context.Employees!.Remove(employee);
-                    await context.SaveChangesAsync();
-                    serviceResponse.Data = await context.Employees.Select(e => mapper.Map<GetEmployeeDto>(e)).ToListAsync();
-                }
-                else
+                if (employee == null)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Employee not found.";
+                    return serviceResponse;
                 }
+
+                foreach (var employeeSkill in await context.EmployeeSkills!.Where(es => es.EmployeeId == employee.Id).ToListAsync())
+                {
+                    context.EmployeeSkills!.Remove(employeeSkill);
+                }
+
+                context.Employees!.Remove(employee!);
+                await context.SaveChangesAsync();
+                serviceResponse.Data = await context.Employees!.Select(e => mapper.Map<GetEmployeeDto>(e)).ToListAsync();
 
             }
             catch (Exception ex)
