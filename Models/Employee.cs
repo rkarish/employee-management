@@ -32,6 +32,7 @@ namespace employee_management.Models
         public string? LastName { get; set; }
         public string? FullName { get { return FirstName + " " + LastName; } }
         public string? Details { get; set; }
+        public List<int>? SkillIds { get; set; }
         public DateTime? HiringDate { get; set; }
     }
 
