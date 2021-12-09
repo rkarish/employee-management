@@ -212,15 +212,18 @@ namespace employee_management.Services
                     return serviceResponse;
                 }
 
-                foreach (var employeeSkill in await context.EmployeeSkills!.Where(es => es.EmployeeId == employee.Id).ToListAsync())
+                foreach (var employeeSkill in await context.EmployeeSkills!
+                        .Where(es => es.EmployeeId == employee.Id)
+                        .ToListAsync())
                 {
                     context.EmployeeSkills!.Remove(employeeSkill);
                 }
 
                 context.Employees!.Remove(employee!);
                 await context.SaveChangesAsync();
-                serviceResponse.Data = await context.Employees!.Select(e => mapper.Map<GetEmployeeDto>(e)).ToListAsync();
-
+                serviceResponse.Data = await context.Employees!
+                    .Select(e => mapper.Map<GetEmployeeDto>(e))
+                    .ToListAsync();
             }
             catch (Exception ex)
             {

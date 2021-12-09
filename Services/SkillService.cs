@@ -19,21 +19,15 @@ namespace employee_management.Services
         public async Task<ServiceResponse<List<GetSkillDto>>> Add(AddSkillDto newSkill)
         {
             var serviceResponse = new ServiceResponse<List<GetSkillDto>>();
-
-            if (context == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No data context.";
-                return serviceResponse;
-            }
-
             try
             {
                 Skill skill = mapper.Map<Skill>(newSkill);
                 skill.DateCreated = DateTime.Now;
                 context.Skills!.Add(skill);
                 await context.SaveChangesAsync();
-                serviceResponse.Data = await context.Skills.Select(s => mapper.Map<GetSkillDto>(s)).ToListAsync();
+                serviceResponse.Data = await context.Skills
+                    .Select(s => mapper.Map<GetSkillDto>(s))
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -48,16 +42,11 @@ namespace employee_management.Services
         {
             var serviceResponse = new ServiceResponse<List<GetSkillDto>>();
 
-            if (context == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No data context.";
-                return serviceResponse;
-            }
-
             try
             {
-                serviceResponse.Data = await context.Skills!.Select(s => mapper.Map<GetSkillDto>(s)).ToListAsync();
+                serviceResponse.Data = await context.Skills!
+                    .Select(s => mapper.Map<GetSkillDto>(s))
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -71,13 +60,6 @@ namespace employee_management.Services
         public async Task<ServiceResponse<GetSkillDto>> GetById(int id)
         {
             var serviceResponse = new ServiceResponse<GetSkillDto>();
-
-            if (context == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No data context.";
-                return serviceResponse;
-            }
 
             try
             {
@@ -105,13 +87,6 @@ namespace employee_management.Services
         public async Task<ServiceResponse<GetSkillDto>> Update(UpdateSkillDto updatedSkill)
         {
             var serviceResponse = new ServiceResponse<GetSkillDto>();
-
-            if (context == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No data context.";
-                return serviceResponse;
-            }
 
             try
             {
@@ -143,13 +118,6 @@ namespace employee_management.Services
         {
             var serviceResponse = new ServiceResponse<List<GetSkillDto>>();
 
-            if (context == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No data context.";
-                return serviceResponse;
-            }
-
             try
             {
                 Skill? skill = await context.Skills!.FirstOrDefaultAsync(s => s.Id == id);
@@ -157,7 +125,9 @@ namespace employee_management.Services
                 {
                     context.Skills!.Remove(skill);
                     await context.SaveChangesAsync();
-                    serviceResponse.Data = await context.Skills.Select(s => mapper.Map<GetSkillDto>(s)).ToListAsync();
+                    serviceResponse.Data = await context.Skills
+                        .Select(s => mapper.Map<GetSkillDto>(s))
+                        .ToListAsync();
                 }
                 else
                 {
